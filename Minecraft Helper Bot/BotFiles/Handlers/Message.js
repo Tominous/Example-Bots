@@ -15,7 +15,7 @@ module.exports.Message_Handle = async function (client, msg, commands) {
 
     for (var i = 0; i < commands.command.length; i++) {
         if (commands.command[i].name == msg.content.split(" ")[0]) {
-            //console.log(commands.command[i]);
+            console.log(commands.command[i]);
 
             if (!commands.command[i].perms || commands.command[i].perms.length === 0) {
                 hasPermission = true;
