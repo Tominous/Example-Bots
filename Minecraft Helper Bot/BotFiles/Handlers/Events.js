@@ -57,7 +57,7 @@ module.exports.RunActions = function (client, applicableEvent) {
             break;
         }
         let parsedAction = ParseActionVariables(applicableEvent.actions[j]);
-        //console.log(parsedAction);
+        console.log(parsedAction);
         switch (parsedAction.type) {
             case "Send Message":
                 SendMessage(client, parsedAction);
@@ -250,7 +250,7 @@ function EditUserData(client, action) {
         userCache[mem.id][action.field] = 0;
     }
 
-    //console.log(action);
+    console.log(action);
     if (userCache[mem.id]) {
         console.log(userCache[mem.id][action.field]);
         if (userCache[mem.id][action.field] !== null) {
@@ -280,7 +280,7 @@ function ParseActionVariables(action) {
     var newaction = Object.assign({}, action);
     regex = /%%(\w+)\[([\w\s]+)\]%%/g; ///%%(.*?)%%/g;
     var regex1 = /%%(.*?)%%/g;
-    // console.log(action);
+     console.log(action);
     // Get the array of current variables
     Object.keys(newaction).forEach(e => {
         try {
@@ -298,7 +298,7 @@ function ParseActionVariables(action) {
         } catch (err) {
             console.log(err);
         }
-        //console.log(`key=${e}  value=${action[e]}`)
+        console.log(`key=${e}  value=${action[e]}`)
     });
     if (cache[guild.id]) {
         cache[guild.id].variables.forEach(sv => {
@@ -315,9 +315,9 @@ function ParseActionVariables(action) {
                     newVal = newVal.replace(regex1, (_match, group1) => vars[group1]);
                     newaction[e] = newVal;
                 } else if (e === "fields") {
-                    /*newaction[e].foreach(fieldString => {
+                    newaction[e].foreach(fieldString => {
                     consolg.log(fieldString);
-                });*/
+                });
                     Array.prototype.forEach.call(newaction[e], child => {
                         var newValF = child.value.replace(regex, (_match, group1, group2) => vars[group1][group2]);
                         newValF = newValF.replace(regex, (_match, group1) => vars[group1]);
@@ -327,10 +327,10 @@ function ParseActionVariables(action) {
             } catch (err) {
                 console.log(err);
             }
-            //console.log(`key=${e}  value=${action[e]}`)
+            console.log(`key=${e}  value=${action[e]}`)
         });
     }
-    //console.log(newaction);
+    console.log(newaction);
     return newaction;
 }
 
@@ -421,7 +421,7 @@ function GetRow_Handle(client, action) {
     Papa.parse(csvData, {
         header: true,
         complete: function (results, file) {
-            //console.log(results.data);
+            console.log(results.data);
             var foundValue = results.data.filter(obj => obj[action.colheader] === action.colval);
             console.log(foundValue);
             if (foundValue.length > 0) {
