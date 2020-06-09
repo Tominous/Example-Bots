@@ -172,31 +172,31 @@ function ParseActionVariables(action, msg) {
         } catch (err) {
             console.log(err);
         }
-        //console.log(`key=${e}  value=${action[e]}`)
+        console.log(`key=${e}  value=${action[e]}`)
     });
 
     if (cache[msg.guild.id]) {
         cache[msg.guild.id].variables.forEach(sv => {
-            //console.log(sv);
+            console.log(sv);
             if (sv.type == "Text" || sv.type == "Number" || sv.type == "User" || sv.type == "Channel" || sv.type == "row") {
                 vars[sv.name] = sv.value;
             }
         });
         Object.keys(newaction).forEach(e => {
             try {
-                // if (newaction[e].includes("[")) {
-                //     console.log("contains bracket: " + newaction[e]);
-                //     var variableName = newaction[e].split("[")[0].slice(2);
-                //     console.log(variableName);
-                //     var keyName = newaction[e].split("[")[1].split("]")[0];
-                //     console.log(keyName);
-                //     if (variableName && keyName) {
-                //         console.log(cache[msg.guild.id].variables);
-                //         var matchingRow = cache[msg.guild.id].variables.find((ch) => ch.name === variableName);
-                //         var matchingItem = matchingRow.value[0][keyName];
-                //         console.log(matchingItem);
-                //         newaction[e] = newaction[e].replace(regex, matchingItem);
-                //     }
+                 if (newaction[e].includes("[")) {
+                     console.log("contains bracket: " + newaction[e]);
+                     var variableName = newaction[e].split("[")[0].slice(2);
+                     console.log(variableName);
+                     var keyName = newaction[e].split("[")[1].split("]")[0];
+                     console.log(keyName);
+                     if (variableName && keyName) {
+                         console.log(cache[msg.guild.id].variables);
+                         var matchingRow = cache[msg.guild.id].variables.find((ch) => ch.name === variableName);
+                         var matchingItem = matchingRow.value[0][keyName];
+                         console.log(matchingItem);
+                         newaction[e] = newaction[e].replace(regex, matchingItem);
+                     }
                 if (e !== "trueActions" && e !== "falseActions" && e !== "fields") {
                     var newVal = newaction[e].replace(regex, (_match, group1, group2) => vars[group1][group2]);
                     console.log(newVal);
@@ -204,9 +204,9 @@ function ParseActionVariables(action, msg) {
                     newVal = newVal.replace(regex1, (_match, group1) => vars[group1]);
                     newaction[e] = newVal;
                 } else if (e === "fields") {
-                    /*newaction[e].foreach(fieldString => {
+                    newaction[e].foreach(fieldString => {
                         consolg.log(fieldString);
-                    });*/
+                    });
                     Array.prototype.forEach.call(newaction[e], child => {
                         var newValF = child.value.replace(regex, (_match, group1, group2) => vars[group1][group2]);
                         newValF = newValF.replace(regex, (_match, group1) => vars[group1]);
@@ -218,16 +218,16 @@ function ParseActionVariables(action, msg) {
             }
         });
 
-        // const regex2 = /(\w+)\[(\w+)\]/;
-        // Object.keys(newaction).forEach((e) => {
-        //     try {
-        //         var newVal2 = newaction[e].replace(regex2, (_match, group1, group2) => vars[group1][group2]);
-        //         console.log(newVal2);
-        //         newaction[e] = newVal2;
-        //     } catch (err) {
-        //         console.log(err);
-        //     }
-        // });
+         const regex2 = /(\w+)\[(\w+)\]/;
+         Object.keys(newaction).forEach((e) => {
+             try {
+                 var newVal2 = newaction[e].replace(regex2, (_match, group1, group2) => vars[group1][group2]);
+                 console.log(newVal2);
+                 newaction[e] = newVal2;
+             } catch (err) {
+                 console.log(err);
+             }
+         });
     }
     console.log(newaction);
     return newaction;
@@ -239,10 +239,10 @@ module.exports.SendMessage_Handle = async function (msg, client, action) {
     if (!chan && action.channelname != "") {
         console.log("ERROR: No channel found with name: " + action.channelname + ". Action name: " + action.name);
     } else if (action.channelname == "" && msg != "") {
-        //await msg.channel.send(eval("`" + action.messagetext + "`"));
+        await msg.channel.send(eval("`" + action.messagetext + "`"));
         msg.channel.send(eval("`" + action.messagetext + "`"));
     } else {
-        //await chan.send(eval("`" + action.messagetext + "`"));
+        await chan.send(eval("`" + action.messagetext + "`"));
         chan.send(eval("`" + action.messagetext + "`"));
     }
 };
@@ -303,7 +303,7 @@ module.exports.AddRoleToUser_Handle = function (msg, client, action) {
         roleImport.push(element.position);
     });
 
-    //var usertag = msg.content.split(" ")[1];
+    var usertag = msg.content.split(" ")[1];
     var botRole = Math.max.apply(Math, roleImport);
 
     //Make sure user who sent command has high enough role
@@ -670,7 +670,7 @@ function EditUserData(msg, client, action) {
     if (!userCache[mem.id][action.field]) {
         userCache[mem.id][action.field] = 0;
     }
-    //console.log(action);
+    console.log(action);
     if (userCache[mem.id]) {
         if (userCache[mem.id][action.field] !== null) {
             let valToSet = null;
@@ -704,7 +704,7 @@ module.exports.GetRow_Handle = function (msg, client, action) {
     Papa.parse(csvData, {
         header: true,
         complete: function (results, file) {
-            //console.log(results.data);
+            console.log(results.data);
             var foundValue = results.data.filter(obj => obj[action.colheader] === action.colval);
             console.log(foundValue);
             if (foundValue.length > 0) {
@@ -732,7 +732,7 @@ module.exports.GetRow_Handle = function (msg, client, action) {
                 passActions.command[0].actions = action.trueActions;
                 parentContext.RunActions(client, msg, passActions, 0);
             } else {
-                //breakFailure = false;
+                breakFailure = false;
                 passActions.command = [];
                 passActions.command[0] = {};
                 passActions.command[0].actions = action.falseActions;
