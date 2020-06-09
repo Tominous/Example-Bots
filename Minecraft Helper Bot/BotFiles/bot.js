@@ -153,8 +153,8 @@ function cleanExit() {
     process.exit(0);
 }
 
-//process.on("SIGINT", cleanExit()); // catch ctrl-c
-//process.on("SIGTERM", cleanExit());
+process.on("SIGINT", cleanExit()); // catch ctrl-c
+process.on("SIGTERM", cleanExit());
 
 process.on("message", (msg) => {
     if (msg.action === "STOP") {
